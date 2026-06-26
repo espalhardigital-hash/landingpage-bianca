@@ -382,7 +382,7 @@ export default function HomeLight() {
             className="text-3xl font-normal text-[#0f172a] mb-12"
           >
             Lo que dicen <span className="font-serif italic text-brand-teal">quienes ya lo probaron</span>:
-          </h2>
+          </motion.h2>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[
