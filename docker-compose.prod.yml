@@ -62,7 +62,7 @@ services:
       - "traefik.http.routers.mente-en-calma-frontend.entrypoints=websecure"
       - "traefik.http.routers.mente-en-calma-frontend.tls=true"
       - "traefik.http.routers.mente-en-calma-frontend.tls.certresolver=letsencrypt"
-      - "traefik.http.services.mente-en-calma-frontend.loadbalancer.server.port=3000"
+      - "traefik.http.services.mente-en-calma-frontend.loadbalancer.server.port=3080"
 
 networks:
   traefik_proxy:
