@@ -27,6 +27,10 @@ class Settings(BaseSettings):
         default="localhost:9080",
         description="Endpoint externo de MinIO para la descarga de clientes (host)"
     )
+    MINIO_BUCKET_NAME: str = Field(
+        default="lead-magnets",
+        description="Nombre del bucket de MinIO"
+    )
     
     RESEND_API_KEY: str = Field(
         default="",
@@ -48,3 +52,4 @@ class Settings(BaseSettings):
         env_file_encoding = "utf-8"
 
 settings = Settings()
+

@@ -13,7 +13,7 @@ class MinioService:
             config=Config(signature_version='s3v4'),
             region_name='us-east-1' # Región dummy requerida por S3v4
         )
-        self.bucket_name = "lead-magnets"
+        self.bucket_name = settings.MINIO_BUCKET_NAME
         self.object_name = "guia-ansiedad.pdf"
 
     def generate_presigned_download_url(self) -> str:
@@ -37,8 +37,10 @@ class MinioService:
             internal_host = settings.MINIO_ENDPOINT
             external_host = settings.MINIO_EXTERNAL_ENDPOINT
             if internal_host != external_host:
-                url = url.replace(f"http://{internal_host}", f"http://{external_host}")
-                url = url.replace(f"https://{internal_host}", f"http://{external_host}")
+                # Si external_host no incluye esquema, forzar https:// por producción con Traefik
+                replacement_target = f"https://{external_host}" if not external_host.startswith("http") else external_host
+                url = url.replace(f"http://{internal_host}", replacement_target)
+                url = url.replace(f"https://{internal_host}", replacement_target)
                 
             return url
         except Exception as e:
@@ -47,3 +49,4 @@ class MinioService:
             return "http://localhost:8080/static/guia-ansiedad.pdf"
 
 minio_service = MinioService()
+
