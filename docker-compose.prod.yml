@@ -39,7 +39,7 @@ services:
     labels:
       - "traefik.enable=true"
       # Enrutar la API en /api del host
-      - "traefik.http.routers.mente-en-calma-backend.rule=Host(`landingopcion.espalhar.shop`) && PathPrefix(`/api`)"
+      - "traefik.http.routers.mente-en-calma-backend.rule=(Host(`landingopcion.espalhar.shop`) || Host(`landingclara.espalhar.shop`)) && PathPrefix(`/api`)"
       - "traefik.http.routers.mente-en-calma-backend.entrypoints=websecure"
       - "traefik.http.routers.mente-en-calma-backend.tls=true"
       - "traefik.http.routers.mente-en-calma-backend.tls.certresolver=letsencrypt"
@@ -59,7 +59,7 @@ services:
     labels:
       - "traefik.enable=true"
       # Enrutar el Frontend en la raíz del host
-      - "traefik.http.routers.mente-en-calma-frontend.rule=Host(`landingopcion.espalhar.shop`)"
+      - "traefik.http.routers.mente-en-calma-frontend.rule=Host(`landingopcion.espalhar.shop`) || Host(`landingclara.espalhar.shop`)"
       - "traefik.http.routers.mente-en-calma-frontend.entrypoints=websecure"
       - "traefik.http.routers.mente-en-calma-frontend.tls=true"
       - "traefik.http.routers.mente-en-calma-frontend.tls.certresolver=letsencrypt"

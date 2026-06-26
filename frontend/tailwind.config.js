@@ -25,11 +25,20 @@ export default {
           primary: '#F8FAFC',
           secondary: '#94A3B8',
           muted: '#64748B'
+        },
+        brand: {
+          teal: '#08415c',        // Azul petróleo principal
+          'teal-dark': '#052a3d',  // Azul petróleo oscuro para el texto
+          'teal-light': '#edf4f7', // Fondo suave para las tarjetas
+          coral: '#c84b31',        // Naranja / coral para los botones
+          'coral-hover': '#b03d25',
+          'light-bg': '#f4f8fa'    // Fondo general de la página clara
         }
       },
       fontFamily: {
         display: ['Space Grotesk', 'sans-serif'],
-        body: ['Inter', 'sans-serif']
+        body: ['Inter', 'sans-serif'],
+        serif: ['"Playfair Display"', 'serif']
       },
       spacing: {
         18: '4.5rem',
