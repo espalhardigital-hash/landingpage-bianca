@@ -47,6 +47,15 @@ class Settings(BaseSettings):
         description="Clave secreta para firmar/validar tokens de confirmación"
     )
     
+    FRONTEND_URL: str = Field(
+        default="http://localhost:3080",
+        description="URL del Frontend para redirecciones"
+    )
+    BACKEND_URL: str = Field(
+        default="http://localhost:8080",
+        description="URL del Backend para enlaces de confirmación/desuscripción"
+    )
+    
     class Config:
         env_file = ".env"
         env_file_encoding = "utf-8"

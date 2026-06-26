@@ -15,8 +15,13 @@ export default function EmailForm({ source = 'hero' }) {
     setStatus('loading');
     setMessage('');
 
+    // Resolver URL de API dinámicamente según el entorno
+    const isLocal = typeof window !== 'undefined' && 
+      (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+    const apiUrl = isLocal ? 'http://localhost:8080/api/leads' : '/api/leads';
+
     try {
-      const response = await fetch('http://localhost:8080/api/leads', {
+      const response = await fetch(apiUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

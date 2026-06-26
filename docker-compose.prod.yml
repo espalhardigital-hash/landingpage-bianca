@@ -29,6 +29,7 @@ services:
       - MINIO_EXTERNAL_ENDPOINT=files.espalhar.shop
       - MINIO_BUCKET_NAME=logicakids
       - FRONTEND_URL=https://landingopcion.espalhar.shop
+      - BACKEND_URL=https://landingopcion.espalhar.shop
       - RESEND_API_KEY=${RESEND_API_KEY}
     depends_on:
       - db

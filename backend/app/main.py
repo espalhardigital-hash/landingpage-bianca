@@ -118,8 +118,8 @@ async def register_lead(
     # 5. Generar enlace de confirmación
     token = generate_confirm_token(new_lead.email)
     # Redirigir al endpoint de confirmación del backend
-    confirm_link = f"http://localhost:8080/api/leads/confirm?token={token}"
-    unsubscribe_link = f"http://localhost:8080/api/leads/unsubscribe?email={new_lead.email}"
+    confirm_link = f"{settings.BACKEND_URL}/api/leads/confirm?token={token}"
+    unsubscribe_link = f"{settings.BACKEND_URL}/api/leads/unsubscribe?email={new_lead.email}"
 
     # 6. Enviar correo de Bienvenida (Día 0) asíncronamente
     background_tasks.add_task(
@@ -157,7 +157,7 @@ async def confirm_lead(token: str, db: AsyncSession = Depends(get_db)):
     if confirmed:
         print(f"[Leads] Lead {email} confirmado correctamente.")
         # Redirige a la página de agradecimiento/confirmación en el frontend
-        return RedirectResponse(url="http://localhost:3080/confirmado")
+        return RedirectResponse(url=f"{settings.FRONTEND_URL}/confirmado")
     
     raise HTTPException(status_code=404, detail="Lead no encontrado.")
 
@@ -170,6 +170,6 @@ async def unsubscribe_lead(email: str, db: AsyncSession = Depends(get_db)):
     unsubscribed = await unsubscribe_lead_by_email(db, email)
     if unsubscribed:
         print(f"[Leads] Lead {email} desuscrito de la secuencia.")
-        return RedirectResponse(url="http://localhost:3080/desuscrito")
+        return RedirectResponse(url=f"{settings.FRONTEND_URL}/desuscrito")
         
     raise HTTPException(status_code=404, detail="Lead no encontrado.")

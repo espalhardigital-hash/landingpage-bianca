@@ -59,6 +59,8 @@ services:
       - MINIO_SECRET_KEY=minioadmin
       - MINIO_SECURE=False
       - MINIO_EXTERNAL_ENDPOINT=localhost:9080 # Puerto externo de MinIO
+      - FRONTEND_URL=http://localhost:3080
+      - BACKEND_URL=http://localhost:8080
       - RESEND_API_KEY=${RESEND_API_KEY:-}
     depends_on:
       - db
