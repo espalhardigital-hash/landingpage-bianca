@@ -53,7 +53,7 @@ export default function Privacidad() {
           isLight ? 'text-brand-teal-dark/80 font-light' : 'text-text-secondary'
         }`}>
           <p>
-            En <strong>Mente en Calma</strong>, liderado por Bianca R., nos tomamos muy en serio la privacidad y seguridad de tu información personal. Esta política explica cómo recopilamos, utilizamos y protegemos tus datos cuando interactúas con nuestra landing page y te suscribes a nuestro lead magnet.
+            En <strong>Mente en Calma</strong>, liderado por Bianca Fabri, nos tomamos muy en serio la privacidad y seguridad de tu información personal. Esta política explica cómo recopilamos, utilizamos y protegemos tus datos cuando interactúas con nuestra landing page y te suscribes a nuestro lead magnet.
           </p>
 
           <h2 className={`text-xl mt-8 ${

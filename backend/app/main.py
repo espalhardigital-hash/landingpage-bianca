@@ -61,13 +61,39 @@ async def rate_limit_middleware(request: Request, call_next):
     response = await call_next(request)
     return response
 
-# Evento de inicio: crear tablas en PostgreSQL
+# Evento de inicio: crear tablas en PostgreSQL e inicializar eBook en MinIO
 @app.on_event("startup")
 async def startup_event():
+    # 1. Inicializar base de datos
     async with engine.begin() as conn:
         # Crea las tablas si no existen
         await conn.run_sync(Base.metadata.create_all)
     print("Tablas de base de datos inicializadas correctamente.")
+
+    # 2. Asegurar que el eBook pdf real de backend/static/guia-ansiedad.pdf esté subido a MinIO
+    try:
+        pdf_path = os.path.join("static", "guia-ansiedad.pdf")
+        if os.path.exists(pdf_path):
+            # Asegurar que el bucket exista
+            try:
+                minio_service.s3_client.head_bucket(Bucket=minio_service.bucket_name)
+            except Exception:
+                print(f"Creando bucket '{minio_service.bucket_name}' en MinIO...")
+                minio_service.s3_client.create_bucket(Bucket=minio_service.bucket_name)
+                
+            print(f"Subiendo {pdf_path} a MinIO bucket '{minio_service.bucket_name}'...")
+            minio_service.s3_client.upload_file(
+                pdf_path, 
+                minio_service.bucket_name, 
+                minio_service.object_name,
+                ExtraArgs={'ContentType': 'application/pdf'}
+            )
+            print("eBook PDF subido a MinIO de forma exitosa.")
+        else:
+            print(f"Error: {pdf_path} no encontrado para subir a MinIO.")
+    except Exception as e:
+        print(f"Advertencia al subir eBook a MinIO en startup: {e}")
+
 
 # Funciones auxiliares para el token de confirmación (Base64 seguro para URL)
 def generate_confirm_token(email: str) -> str:

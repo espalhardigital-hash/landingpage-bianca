@@ -58,7 +58,7 @@ export default function Bio() {
 
               {/* Información rápida */}
               <div className="text-center">
-                <h4 className="font-display font-bold text-xl text-text-primary">Bianca R.</h4>
+                <h4 className="font-display font-bold text-xl text-text-primary">Bianca Fabri</h4>
                 <p className="text-xs text-text-muted mt-1 uppercase tracking-widest font-semibold">Psicóloga & Terapeuta Juvenil</p>
                 <div className="flex justify-center gap-1.5 mt-3">
                   <span className="text-[10px] bg-white/5 border border-white/5 px-2 py-0.5 rounded text-glow-lavender">@bianca.mente</span>

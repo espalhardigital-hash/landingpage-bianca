@@ -75,7 +75,7 @@ export default function Terminos() {
             isLight ? 'font-serif italic text-brand-teal font-medium' : 'font-display font-bold text-text-primary'
           }`}>2. Propiedad Intelectual</h2>
           <p>
-            Todos los materiales proporcionados (incluido el eBook en PDF "Guía definitiva contra la ansiedad", textos de correos, ilustraciones y código de la landing page) son propiedad exclusiva de Mente en Calma y Bianca R. Se otorga una licencia personal, no exclusiva e intransferible para tu lectura y uso individual. Queda terminantemente prohibida la redistribución, venta o retransmisión de estos materiales sin el consentimiento expreso y por escrito de la titular.
+            Todos los materiales proporcionados (incluido el eBook en PDF "Guía definitiva contra la ansiedad", textos de correos, ilustraciones y código de la landing page) son propiedad exclusiva de Mente en Calma y Bianca Fabri. Se otorga una licencia personal, no exclusiva e intransferible para tu lectura y uso individual. Queda terminantemente prohibida la redistribución, venta o retransmisión de estos materiales sin el consentimiento expreso y por escrito de la titular.
           </p>
 
           <h2 className={`text-xl mt-8 ${

@@ -33,13 +33,14 @@ services:
     container_name: lead_magnet_minio_init
     depends_on:
       - minio
+    volumes:
+      - ./backend/static/guia-ansiedad.pdf:/tmp/guia-ansiedad.pdf
     entrypoint: >
       /bin/sh -c "
       sleep 5;
       until (/usr/bin/mc alias set myminio http://minio:9000 minioadmin minioadmin) do echo 'Waiting for MinIO...' && sleep 1; done;
       /usr/bin/mc mb myminio/lead-magnets || true;
       /usr/bin/mc anonymous set download myminio/lead-magnets || true;
-      echo 'eBook PDF content mock' > /tmp/guia-ansiedad.pdf;
       /usr/bin/mc cp /tmp/guia-ansiedad.pdf myminio/lead-magnets/guia-ansiedad.pdf;
       echo 'MinIO initialized successfully!';
       "
