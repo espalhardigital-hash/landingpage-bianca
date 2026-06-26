@@ -1,0 +1,83 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .glass {
+    background-color: rgba(10, 15, 26, 0.6);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  }
+
+  .glass-strong {
+    background-color: rgba(10, 15, 26, 0.8);
+    backdrop-filter: blur(40px);
+    -webkit-backdrop-filter: blur(40px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.5);
+  }
+
+  .glass-hover {
+    transition: all 300ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  
+  .glass-hover:hover {
+    background-color: rgba(20, 30, 58, 0.7);
+    border-color: rgba(200, 182, 255, 0.3);
+  }
+
+  .glow-lavender {
+    box-shadow: 0 0 20px 0 rgba(200, 182, 255, 0.25), 0 0 40px 0 rgba(200, 182, 255, 0.12);
+  }
+
+  .glow-mint {
+    box-shadow: 0 0 20px 0 rgba(125, 249, 196, 0.25), 0 0 40px 0 rgba(125, 249, 196, 0.12);
+  }
+
+  .glow-subtle {
+    box-shadow: 0 0 10px 0 rgba(200, 182, 255, 0.08);
+  }
+}
+
+/* Transiciones globales fluidas */
+html {
+  scroll-behavior: smooth;
+  font-family: 'Inter', sans-serif;
+  color-scheme: dark;
+}
+
+body {
+  background-color: #030508;
+}
+
+/* Animaciones sutiles para fondos */
+@keyframes pulseGlow {
+  0%, 100% {
+    opacity: 0.4;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scale(1.08);
+  }
+}
+
+.animate-pulse-glow {
+  animation: pulseGlow 8s ease-in-out infinite;
+}
+
+/* Soporte para preferencias de movimiento reducido */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-delay: -1ms !important;
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    background-attachment: initial !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0s !important;
+    transition-delay: 0s !important;
+    transform: none !important;
+  }
+}

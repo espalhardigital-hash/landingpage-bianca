@@ -1,0 +1,100 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: lead_magnet_db_prod
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres # El usuario debería cambiar esto por seguridad en producción
+      POSTGRES_DB: lead_magnet_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    # No exponemos puertos al host por seguridad en producción
+
+  minio:
+    image: minio/minio:latest
+    container_name: lead_magnet_minio_prod
+    restart: always
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin # El usuario debería cambiar esto por seguridad en producción
+    command: server /data --console-address ":9001"
+    volumes:
+      - minio_data:/data
+    # No exponemos puertos al host por seguridad en producción
+
+  minio-init:
+    image: minio/mc:latest
+    container_name: lead_magnet_minio_init_prod
+    depends_on:
+      - minio
+    entrypoint: >
+      /bin/sh -c "
+      sleep 5;
+      until (/usr/bin/mc alias set myminio http://minio:9000 minioadmin minioadmin) do echo 'Waiting for MinIO...' && sleep 1; done;
+      /usr/bin/mc mb myminio/lead-magnets || true;
+      /usr/bin/mc anonymous set download myminio/lead-magnets || true;
+      echo 'eBook PDF content' > /tmp/guia-ansiedad.pdf;
+      /usr/bin/mc cp /tmp/guia-ansiedad.pdf myminio/lead-magnets/guia-ansiedad.pdf;
+      "
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: lead_magnet_backend_prod
+    restart: always
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://postgres:postgres@db:5432/lead_magnet_db
+      - MINIO_ENDPOINT=minio:9000
+      - MINIO_ACCESS_KEY=minioadmin
+      - MINIO_SECRET_KEY=minioadmin
+      - MINIO_SECURE=False
+      - MINIO_EXTERNAL_ENDPOINT=landingopcion.espalhar.shop/api/minio # Cambiar si se expone MinIO por Traefik
+      - FRONTEND_URL=https://landingopcion.espalhar.shop
+      - RESEND_API_KEY=${RESEND_API_KEY}
+    depends_on:
+      - db
+      - minio
+    networks:
+      - default
+      - traefik-net
+    labels:
+      - "traefik.enable=true"
+      # Enrutar la API en /api del host
+      - "traefik.http.routers.mente-en-calma-backend.rule=Host(`landingopcion.espalhar.shop`) && PathPrefix(`/api`)"
+      - "traefik.http.routers.mente-en-calma-backend.entrypoints=websecure"
+      - "traefik.http.routers.mente-en-calma-backend.tls=true"
+      - "traefik.http.routers.mente-en-calma-backend.tls.certresolver=myresolver"
+      - "traefik.http.services.mente-en-calma-backend.loadbalancer.server.port=8000"
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: lead_magnet_frontend_prod
+    restart: always
+    depends_on:
+      - backend
+    networks:
+      - default
+      - traefik-net
+    labels:
+      - "traefik.enable=true"
+      # Enrutar el Frontend en la raíz del host
+      - "traefik.http.routers.mente-en-calma-frontend.rule=Host(`landingopcion.espalhar.shop`)"
+      - "traefik.http.routers.mente-en-calma-frontend.entrypoints=websecure"
+      - "traefik.http.routers.mente-en-calma-frontend.tls=true"
+      - "traefik.http.routers.mente-en-calma-frontend.tls.certresolver=myresolver"
+      - "traefik.http.services.mente-en-calma-frontend.loadbalancer.server.port=3000"
+
+networks:
+  traefik-net:
+    external: true
+    name: traefik-net # Cambiar por el nombre de la red externa de tu Traefik (ej. 'web', 'proxy')
+
+volumes:
+  postgres_data:
+  minio_data:

@@ -1,0 +1,44 @@
+# Entornos virtuales de Python
+.venv/
+venv/
+ENV/
+env/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Node.js
+node_modules/
+dist/
+dist-ssr/
+*.local
+.eslintcache
+
+# Bases de datos locales SQLite
+*.db
+*.db-journal
+*.db-wal
+
+# Variables de entorno y llaves sensibles
+.env
+.env.*
+!.env.example
+
+# Logs y temporales
+*.log
+.system_generated/
+scratch/
+browser_recordings/
+html_artifacts/
+knowledge/
+worktrees/
+
+# IDEs
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
